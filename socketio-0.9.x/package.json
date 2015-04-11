@@ -8,6 +8,6 @@
   "dependencies": {
     "net" : "*",
     "express" : "*",
-    "socket.io" : "0.9.17"
+    "socket.io" : "0.9.*"
   }
 }
