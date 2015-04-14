@@ -7,13 +7,13 @@ var handleClient = function (socket) {
     console.log('connection');
 
     //testing simple message
-    socket.send('simple message send receive test');
+    socket.send('Default namespace simple message send receive test');
 
     socket.on('message', function (msg) {
 
-        console.log('received message: ' + msg);
+        console.log('Default namespace received message: ' + msg);
 
-	socket.send('echo: ' + msg);
+		socket.send('echo: ' + msg);
 
     });
 
@@ -31,14 +31,14 @@ var handleClient = function (socket) {
 
     socket.on("echotest", function(data) {
 
-        console.log("received data: " + data);
+        console.log("Default namespace echotest event received data: " + data);
 
         socket.emit("echotest", data);
 
     });
 
     socket.on('disconnect', function () {
-        console.log('disconnect socket');
+        console.log('disconnect socket default namespace');
         socket.broadcast.emit('announcement', 'disconnect');
     });
 
@@ -50,12 +50,13 @@ io.of('/testpoint').on('connection', function(socket) {
     console.log('testpoint connection');
 
     //testing simple message
-    socket.send('simple message send receive test');
+    socket.send('Test endpoint /testpoint simple message send receive test');
 
     socket.on('message', function (msg) {
-        console.log(msg);
 
-       socket.send('echo: ' + msg);
+		console.log('Test endpoint "/testpoint" received simple message: ' + msg);
+		
+		socket.send('echo: ' + msg);
 
     });
 
@@ -63,9 +64,10 @@ io.of('/testpoint').on('connection', function(socket) {
     msg.name = "myname";
     msg.type = "mytype";
     socket.emit("testevent",msg);
+	
     socket.on("echotest", function(data) {
 
-        console.log(data);
+        console.log("Test endpoint '/testpoint' event echotest received data: " + data);
 
         socket.emit("echotest", data);
 
@@ -78,4 +80,10 @@ io.of('/testpoint').on('connection', function(socket) {
 
 });
 
-server.listen(3009);
+
+
+var listen = function() {
+	server.listen(3009);
+}
+
+module.exports.listen = listen;
